@@ -12,15 +12,10 @@ app = Flask(__name__)
 app.register_blueprint(app_views)
 app.strict_slashes = False
 
-
-@app.route('/')
-def home():
-    return jsonify({"Hello": "World"})
-
-
 @app.teardown_appcontext
 def show_teardown(exception):
-    storage.close()
+	"""method to handle teardown"""
+	storage.close()
 
 
 if __name__ == '__main__':
