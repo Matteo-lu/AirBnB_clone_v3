@@ -8,7 +8,6 @@ handles all default RESTFul API actions
 from api.v1.views import app_views
 from flask import Flask
 from flask import jsonify
-from models.state import State
 from models.user import User
 from models import storage
 from flask import request
@@ -61,7 +60,10 @@ def create_user():
         abort(400, 'Missing name')
     else:
         new_user = User()
-        new_user.name = json_data['name']
+        if ('password' in json_data.keys()):
+            new_user.password = json_data['password']
+        elif ('email' in json_data.keys()):
+            new_user.email = json_data['email']
         storage.new(new_user)
         storage.save()
         return (jsonify(State.to_dict(new_user)), 201)
