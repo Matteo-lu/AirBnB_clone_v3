@@ -44,7 +44,7 @@ def delete_states_by_id(state_id):
     try:
         obj = storage.get(State, state_id)
         State.delete(obj)
-        storage.save()  # Check
+        storage.save()
         return ({}), 200
     except:
         abort(404)
@@ -61,7 +61,8 @@ def create_states():
     else:
         new_state = State()
         new_state.name = json_data['name']
-        new_state.save()  # Check
+        storage.new(new_state)
+        storage.save()
         return (jsonify(State.to_dict(new_state)), 201)
 
 
