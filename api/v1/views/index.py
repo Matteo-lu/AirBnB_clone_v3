@@ -19,7 +19,7 @@ from models.user import User
 @app_views.route('/status/', strict_slashes=False)
 def index():
     """method to return status ok"""
-    return (jsonify(Status="OK"))
+    return (jsonify(Status="OK")), 200
 
 
 @app_views.route('/stats/', strict_slashes=False)
