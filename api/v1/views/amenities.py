@@ -52,7 +52,7 @@ def delete_amenity_by_id(amenity_id):
 
 
 @app_views.route('/amenities', strict_slashes=False,  methods=['POST'])
-def create_states():
+def create_amenity():
     """Creates a State"""
     json_data = request.get_json()
     if not (json_data):
@@ -72,7 +72,7 @@ def create_states():
                 strict_slashes=False,
                 methods=['PUT']
                 )
-def update_states(amenity_id):
+def update_amenity(amenity_id):
     """Updates a State object"""
     try:
         json_data = request.get_json()
