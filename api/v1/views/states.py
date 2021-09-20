@@ -15,7 +15,7 @@ from flask import abort
 
 
 @app_views.route('/states', strict_slashes=False)
-def retriveve_states():
+def retrive_states():
     """Retrieves the list of all State objects"""
     obj_list = []
     obj_dict = storage.all(State)
@@ -25,7 +25,7 @@ def retriveve_states():
 
 
 @app_views.route('/states/<state_id>', strict_slashes=False)
-def retriveve_states_by_id(state_id):
+def retrive_states_by_id(state_id):
     """Retrieves a State object"""
     try:
         obj = storage.get(State, state_id)
@@ -79,6 +79,6 @@ def update_states(state_id):
             obj = storage.get(State, state_id)
             obj.name = json_data['name']
             storage.save()
-            return (jsonify(State.to_dict(obj)))
+            return (jsonify(State.to_dict(obj)), 200)
     except:
         abort(404)
