@@ -54,7 +54,7 @@ def delete_states_by_id(state_id):
 def create_states():
     """Creates a State"""
     json_data = request.get_json()
-    if (json_data is None):
+    if not (json_data):
         abort(400, 'Not a JSON')
     elif ('name' not in json_data.keys()):
         abort(400, 'Missing name')
@@ -70,7 +70,7 @@ def update_states(state_id):
     """Updates a State object"""
     try:
         json_data = request.get_json()
-        if (json_data is None):
+        if not (json_data):
             abort(400, 'Not a JSON')
         elif ('name' not in json_data.keys()):
             abort(400, 'Missing name')
