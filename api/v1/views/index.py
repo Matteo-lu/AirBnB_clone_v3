@@ -16,13 +16,13 @@ from models.state import State
 from models.user import User
 
 
-@app_views.route('/status/', strict_slashes=False)
+@app_views.route('/status', strict_slashes=False)
 def index():
     """method to return status ok"""
-    return (jsonify(Status="OK")), 200
+    return (jsonify(status="OK")), 200
 
 
-@app_views.route('/stats/', strict_slashes=False)
+@app_views.route('/stats', strict_slashes=False)
 def count_types():
     """method that retrieves the number of each objects by type"""
     classes = {"Amenity": Amenity, "City": City,
