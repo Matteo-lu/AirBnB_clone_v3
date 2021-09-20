@@ -61,9 +61,18 @@ def create_user():
     else:
         new_user = User()
         if ('password' in json_data.keys()):
-            new_user.password = json_data['password']
-        elif ('email' in json_data.keys()):
-            new_user.email = json_data['email']
+            setattr(obj, 'password', json_data['password'])
+        else:
+            abort(400, 'Missing password')
+        if ('email' in json_data.keys()):
+            setattr(obj, 'email', json_data['email'])
+        else:
+            abort(400, 'Missing email')
+        if ('first_name' in json_data.keys()):
+            setattr(obj, 'first_name', json_data['first_name'])
+        elif ('last_name' in json_data.keys()):
+            setattr(obj, 'last_name', json_data['last_name'])
+
         storage.new(new_user)
         storage.save()
         return (jsonify(State.to_dict(new_user)), 201)
@@ -80,11 +89,14 @@ def update_user(user_id):
         json_data = request.get_json()
         if not (json_data):
             abort(400, 'Not a JSON')
-        elif ('name' not in json_data.keys()):
-            abort(400, 'Missing name')
         else:
             obj = storage.get(User, user_id)
-            setattr(obj, 'name', json_data['name'])
+            if ('first_name' in json_data.keys()):
+                setattr(obj, 'first_name', json_data['first_name'])
+            elif ('last_name' in json_data.keys()):
+                setattr(obj, 'last_name', json_data['last_name'])
+            elif ('password' in json_data.keys()):
+                setattr(obj, 'password', json_data['password'])
             storage.save()
             return (jsonify(obj.to_dict()), 200)
     except:
