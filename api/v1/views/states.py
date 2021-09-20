@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """
-module to create a new view for State objects that handles all default RESTFul API actions
+module to create a new view for State objects that
+handles all default RESTFul API actions
 
 """
 
@@ -33,7 +34,11 @@ def retriveve_states_by_id(state_id):
         return make_response(jsonify({'error': 'Not found'}), 404)
 
 
-@app_views.route('/states/<state_id>', strict_slashes=False, methods=['DELETE'])
+@app_views.route(
+                '/states/<state_id>',
+                strict_slashes=False,
+                methods=['DELETE']
+                )
 def delete_states_by_id(state_id):
     """Deletes a State object"""
     try:
