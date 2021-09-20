@@ -79,7 +79,7 @@ def update_states(state_id):
             obj = storage.get(State, state_id)
             attributes = dir(obj)
             obj.name = json_data['name']  # Check
-            obj.save()
+            storage.save()
             return (jsonify(State.to_dict(obj)))
     except:
         abort(404)
