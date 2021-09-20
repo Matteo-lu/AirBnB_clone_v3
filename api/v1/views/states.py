@@ -77,8 +77,7 @@ def update_states(state_id):
             abort(400, 'Missing name')
         else:
             obj = storage.get(State, state_id)
-            attributes = dir(obj)
-            obj.name = json_data['name']  # Check
+            obj.name = json_data['name']
             storage.save()
             return (jsonify(State.to_dict(obj)))
     except:
