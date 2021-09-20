@@ -10,11 +10,11 @@ from flask import Flask
 from flask import jsonify
 from models.state import State
 from models import storage
-from flask import make_response
 from flask import request
+from flask import abort
 
 
-@app_views.route('/states/', strict_slashes=False)
+@app_views.route('/states', strict_slashes=False)
 def retriveve_states():
     """Retrieves the list of all State objects"""
     obj_list = []
@@ -31,7 +31,7 @@ def retriveve_states_by_id(state_id):
         obj = storage.get(State, state_id)
         return (jsonify(State.to_dict(obj)))
     except:
-        return make_response(jsonify({'error': 'Not found'}), 404)
+        abort(404)
 
 
 @app_views.route(
@@ -47,22 +47,22 @@ def delete_states_by_id(state_id):
         storage.save()  # Check
         return ({}), 200
     except:
-        return make_response(jsonify({'error': 'Not found'}), 404)
+        abort(404)
 
 
-@app_views.route('/states/', strict_slashes=False,  methods=['POST'])
+@app_views.route('/states', strict_slashes=False,  methods=['POST'])
 def create_states():
     """Creates a State"""
     json_data = request.get_json()
-    if (json_data is None):  # Check
-        return make_response('Not a JSON'), 404  # Check
+    if (json_data is None):
+        abort(400, 'Not a JSON')
     elif ('name' not in json_data.keys()):
-        return make_response('Missing name'), 404  # Check
+        abort(400, 'Missing name')
     else:
         new_state = State()
         new_state.name = json_data['name']
         new_state.save()  # Check
-        return (jsonify(State.to_dict(new_state)))
+        return (jsonify(State.to_dict(new_state)), 201)
 
 
 @app_views.route('/states/<state_id>', strict_slashes=False,  methods=['PUT'])
@@ -71,7 +71,9 @@ def update_states(state_id):
     try:
         json_data = request.get_json()
         if (json_data is None):
-            return make_response('Not a JSON'), 404
+            abort(400, 'Not a JSON')
+        elif ('name' not in json_data.keys()):
+            abort(400, 'Missing name')
         else:
             obj = storage.get(State, state_id)
             attributes = dir(obj)
@@ -79,4 +81,4 @@ def update_states(state_id):
             obj.save()
             return (jsonify(State.to_dict(obj)))
     except:
-        return make_response(jsonify({'error': 'Not found'}), 404)
+        abort(404)
