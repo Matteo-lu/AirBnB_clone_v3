@@ -31,7 +31,7 @@ def retrive_states_by_id(state_id):
     for state_obj in all_states.values():
         if state_id == state_obj.id:
             return (jsonify(state_obj.to_dict()))
-        abort(404)
+    abort(404)
 
 
 @app_views.route(
@@ -45,7 +45,7 @@ def delete_states_by_id(state_id):
     for state_obj in all_states.values():
         if state_id == state_obj.id:
             state_id.delete()
-            state_id.save()
+            storage.save()
             return ({}), 200
     abort(404)
 
@@ -61,8 +61,7 @@ def create_states():
     else:
         new_state = State()
         new_state.name = json_data['name']
-        storage.new(new_state)
-        storage.save()
+        new_state.save()
         return (jsonify(State.to_dict(new_state)), 201)
 
 
@@ -75,13 +74,11 @@ def update_states(state_id):
             if not (request.json):
                 abort(400, 'Not a JSON')
             json_data = request.get_json()
-            if ('name' not in json_data.keys()):
-                abort(400, 'Missing name')
             for k, v in json_data.items():
                 if k in ['update_at', 'create_at', 'id']:
                     continue
                 else:
-                    setattr(state_obj, "name", json_data['name'])
+                    setattr(state_obj, k, v)
                     state_obj.save()
                     return (jsonify(State.to_dict(obj)), 200)
         abort(404)
