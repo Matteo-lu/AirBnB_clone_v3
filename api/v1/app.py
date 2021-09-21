@@ -10,6 +10,7 @@ from models import storage
 from flask import make_response
 from flask import jsonify
 from os import getenv
+from flask_cors import CORS
 
 if getenv("HBNB_API_HOST") is None:
     HBNB_API_HOST = '0.0.0.0'
@@ -23,6 +24,7 @@ else:
 app = Flask(__name__)
 app.register_blueprint(app_views)
 app.strict_slashes = False
+cors = CORS(app, resources={r"/api/*": {"origins": "0.0.0.0"}})
 
 
 @app.teardown_appcontext
