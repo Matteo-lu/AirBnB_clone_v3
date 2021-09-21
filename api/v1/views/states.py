@@ -27,10 +27,10 @@ def retrive_states():
 @app_views.route('/states/<state_id>', strict_slashes=False)
 def retrive_states_by_id(state_id):
     """Retrieves a State object"""
-    try:
-        obj = storage.get(State, state_id)
-        return (jsonify(State.to_dict(obj)))
-    except:
+    all_states = storage.all(State)
+    for state_obj in all_states.values():
+        if state_id == state_obj.id:
+            return (jsonify(state_obj.to_dict()))
         abort(404)
 
 
@@ -41,13 +41,13 @@ def retrive_states_by_id(state_id):
                 )
 def delete_states_by_id(state_id):
     """Deletes a State object"""
-    try:
-        obj = storage.get(State, state_id)
-        State.delete(obj)
-        storage.save()
-        return ({}), 200
-    except:
-        abort(404)
+    all_states = storage.all(State)
+    for state_obj in all_states.values():
+        if state_id == state_obj.id:
+            state_id.delete()
+            state_id.save()
+            return ({}), 200
+    abort(404)
 
 
 @app_views.route('/states', strict_slashes=False,  methods=['POST'])
