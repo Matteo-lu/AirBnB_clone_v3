@@ -80,5 +80,5 @@ def update_states(state_id):
                 else:
                     setattr(state_obj, k, v)
                     state_obj.save()
-                    return (jsonify(State.to_dict(obj)), 200)
+                    return (jsonify(State.to_dict(state_obj)), 200)
     abort(404)
