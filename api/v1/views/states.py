@@ -44,7 +44,7 @@ def delete_states_by_id(state_id):
     all_states = storage.all(State)
     for state_obj in all_states.values():
         if state_id == state_obj.id:
-            state_id.delete()
+            state_obj.delete()
             storage.save()
             return ({}), 200
     abort(404)
